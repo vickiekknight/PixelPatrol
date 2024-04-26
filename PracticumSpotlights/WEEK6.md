@@ -1,14 +1,16 @@
 # Week 6 Practicum Spotlight
 
-Qualitative:
+## Qualitative:
 Question, problem, hypothesis, claim, context, motivation
 Definitions, data, methods to be used
 Rationale, assumptions, biases
-Quantitative:
+
+## Quantitative:
 Data processing, analysis, visualization
 Documented code and results
 Summary visuals
-Qualitative:
+
+## Qualitative:
 Answer, update question/claim, summary, re-contextualization, story, relate to domain knowledge
 Uncertainty, limitations, caveats
 New problems, next steps

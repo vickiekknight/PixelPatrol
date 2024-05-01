@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Image Detector</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Detector</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>AI Image Detector</h1>
-        <div class="button-container">
-            <button id="detectAI" class="btn">Detect AI</button>
-            <button id="scanImage" class="btn">Scan Image</button>
-        </div>
-        <div class="image-list" id="imageList"></div>
-        <div id="aiContentContainer"></div>
+  <div class="container">
+    <h1>AI Image Detector</h1>
+    <button id="detectButton" class="detect-btn">Detect AI</button>
+    <input type="file" id="imageInput" accept="image/*">
+    <div id="resultContainer" class="result-container">
+        <h2>Detection Results</h2>
+        <p id="resultText"></p>
     </div>
-    <script src="popup.js"></script>
+  </div>
+  <script src="popup.js"></script>
 </body>
 </html>

@@ -28,6 +28,21 @@ body {
     font-size: 16px;
     font-weight: 500;
   }
+
+  .upload-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: #833ab4;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
   
   .image-list {
     margin-top: 20px;

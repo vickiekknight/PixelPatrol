@@ -1,69 +1,70 @@
 body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
-    color: white;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: 700;
-  }
-  
-  .btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    color: #833ab4;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-  }
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+  color: white;
+  margin: 0;
+  padding: 0;
+}
 
-  .upload-btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    color: #833ab4;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 10px;
-  }
-  
-  
-  .image-list {
-    margin-top: 20px;
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  
-  .image-list ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .image-list li {
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
+.container {
+  padding: 75px;
+}
 
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+.title {
+  margin-bottom: 20px; /* create space */
+  text-align: center; 
+}
+
+h1 {
+  margin: 0;
+  font-weight: 700;
+  white-space: nowrap; 
+  overflow: hidden; 
+  margin-bottom: 20px;
+}
+
+.detect-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #fff;
+  color: #833ab4;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 20px; /* create space */
+}
+
+.image-box {
+  border: 2px dashed #fff;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  width: 100%; 
+  max-width: 100%; 
+}
+
+.image-box p {
+  margin: 0;
+}
+
+.upload-btn {
+  display: none;
+}
+
+.result-container {
+  margin-top: 20px;
+}
+
+.result-container h2 {
+  margin-top: 0;
+}
+
+.result-container p {
+  margin-bottom: 0; 
+}

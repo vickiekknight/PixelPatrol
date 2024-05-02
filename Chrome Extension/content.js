@@ -1,3 +1,18 @@
+function dragOverHandler(event) {
+  event.preventDefault(); // Prevent default behavior
+}
+
+function dropHandler(event) {
+  event.preventDefault(); // Prevent default behavior
+  const files = event.dataTransfer.files;
+  if (files.length > 0) {
+    const file = files[0];
+    const imageInput = document.getElementById('imageInput');
+    imageInput.files = files; // Update the file input element with the dropped file
+    fileSelected(event);
+  }
+}
+
 async function getImageData(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -27,6 +42,7 @@ function detectImagesOnPage() {
 document.addEventListener('DOMContentLoaded', () => {
   const imageInput = document.getElementById('imageInput');
   const detectButton = document.getElementById('detectButton');
+  const imageBox = document.getElementById('imageBox');
 
   detectButton.addEventListener('click', async () => {
     const file = imageInput.files[0];
@@ -35,4 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.runtime.sendMessage({ action: 'detectImage', imageData });
     }
   });
+
+  // Add event listeners for drag-and-drop events
+  imageBox.addEventListener('dragover', dragOverHandler);
+  imageBox.addEventListener('drop', dropHandler);
 });

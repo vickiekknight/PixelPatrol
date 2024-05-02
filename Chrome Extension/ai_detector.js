@@ -1,22 +1,31 @@
-'use strict';
+import * as tf from '@tensorflow/tfjs';
 
-const tf = require('@tensorflow/tfjs');
+const aiModelPath = 'path/to/ai/model.json';
+const deepfakeModelPath = 'path/to/deepfake/model.json';
 
-// Load the pre-trained AI and Deepfake detection models
-const aiModel = await tf.loadLayersModel('path/to/ai-model');
-const deepfakeModel = await tf.loadLayersModel('path/to/deepfake-model');
+async function loadModel(modelPath) {
+  try {
+    const model = await tf.loadLayersModel(modelPath);
+    console.log(`${modelPath} loaded successfully.`);
+    return model;
+  } catch (error) {
+    console.error(`Error loading ${modelPath}: ${error}`);
+    throw error;
+  }
+}
 
-// Functions to detect AI-generated and deepfake images
-async function detectAIImage(imageData) {
+async function detectAIImage(imageData, aiModel) {
   const tensor = tf.browser.fromPixels(imageData);
   const prediction = await aiModel.predict(tensor);
-  return prediction[0] > 0.5;
+  tensor.dispose();
+  return prediction.dataSync()[0] > 0.5;
 }
 
-async function detectDeepfake(imageData) {
+async function detectDeepfake(imageData, deepfakeModel) {
   const tensor = tf.browser.fromPixels(imageData);
   const prediction = await deepfakeModel.predict(tensor);
-  return prediction[0] > 0.5;
+  tensor.dispose();
+  return prediction.dataSync()[0] > 0.5;
 }
 
-export { detectAIImage, detectDeepfake };
+export { loadModel, detectAIImage, detectDeepfake };

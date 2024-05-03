@@ -56,3 +56,28 @@ document.addEventListener('DOMContentLoaded', () => {
   imageBox.addEventListener('dragover', dragOverHandler);
   imageBox.addEventListener('drop', dropHandler);
 });
+
+// newgit submodule deinit -f -- 'Chrome Extension/temp-model/Deepfake-Detection' && git rm -f 'Chrome Extension/temp-model/Deepfake-Detection'git submodule deinit -f -- 'Chrome Extension/temp-model/Deepfake-Detection' && git rm -f 'Chrome Extension/temp-model/Deepfake-Detection'git submodule deinit -f -- 'Chrome Extension/temp-model/Deepfake-Detection' && git rm -f 'Chrome Extension/temp-model/Deepfake-Detection'git submodule deinit -f -- 'Chrome Extension/temp-model/Deepfake-Detection' && git rm -f 'Chrome Extension/temp-model/Deepfake-Detection'git submodule deinit -f -- 'Chrome Extension/temp-model/Deepfake-Detection' && git rm -f 'Chrome Extension/temp-model/Deepfake-Detection'
+// Load the model
+async function loadModel() {
+  const modelUrl = chrome.runtime.getURL('./temp-model/Deepfake-Detection/');
+  const model = await tf.loadLayersModel(modelUrl);
+  return model;
+}
+
+// Use the model to detect an image
+async function detectImage(imageData) {
+  const model = await loadModel();
+  const tensor = tf.browser.fromPixels(imageData, 3);
+  const predictions = model.predict(tensor);
+  // Analyze the predictions to determine the classification
+  // ...
+}
+
+document.getElementById('detectButton').addEventListener('click', async () => {
+  const file = imageInput.files[0];
+  if (file) {
+    const imageData = await getImageData(file);
+    detectImage(imageData);
+  }
+});

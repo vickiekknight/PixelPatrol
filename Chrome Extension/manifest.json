@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "AI Image Detector",
+    "version": "1.0",
+    "description": "Detect AI-generated and deepfake images on web pages",
+    "permissions": ["activeTab"],
+    "browser_action": {
+      "default_popup": "popup.html"
+    },
+    "background": {
+      "scripts": ["background.js"]
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ]
+  }

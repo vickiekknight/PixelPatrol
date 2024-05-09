@@ -1,7 +1,7 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "AI Image Detector",
-    "version": "1.0",
+    "version": "3.0",
     "description": "Detect AI-generated and deepfake images on web pages",
     "permissions": ["activeTab"],
     "browser_action": {
@@ -9,6 +9,6 @@
     },
     "background": {
       "scripts": ["backend.js"]
-      
+
     }
   }

@@ -26,8 +26,28 @@ function dropHandler(e) {
 // Handle file selection
 function handleFileSelect(e) {
     const files = e.target.files;
-    handleFiles(files);
-}
+  
+    if (files.length > 0) {
+      const file = files[0];
+      const reader = new FileReader();
+  
+      reader.onload = function(e) {
+        const img = new Image();
+        img.src = e.target.result;
+        imageBox.innerHTML = '';
+        imageBox.appendChild(img);
+  
+        // Call your AI detection function here
+        detectAI(img);
+      };
+  
+      reader.onerror = function(e) {
+        console.error('Error reading file:', e.target.error);
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
 
 // Handle files
 function handleFiles(files) {

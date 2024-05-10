@@ -1,7 +1,10 @@
+import sys
+deepfake_detection = sys.path.append('PixelPatrol/Chrome Extension/deepfake_detection_pkg')
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from io import BytesIO
-from deepfake_detection_pkg.deepfake_detection import deepfake_detection
+# from deepfake_detection_pkg import deepfake_detection
 import base64
 
 app = Flask(__name__)
@@ -12,7 +15,9 @@ def detect():
     image_data = request.get_data()
     image = BytesIO(base64.b64decode(image_data))
     result = deepfake_detection.detect(image)
-    return jsonify({'is_deepfake': result})
+    response = jsonify({'is_deepfake': result})
+    print(f"Response: {response.data}")
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)

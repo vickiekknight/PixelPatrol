@@ -75,3 +75,24 @@ h1 {
 .result-container p {
   margin-bottom: 0; 
 }
+
+.model-select {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.model-select label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.model-select select {
+  padding: 5px;
+  border-radius: 5px;
+  border: none;
+  background-color: #fff;
+  color: #833ab4;
+  font-size: 14px;
+}

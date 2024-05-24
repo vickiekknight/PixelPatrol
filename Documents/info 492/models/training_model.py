@@ -69,7 +69,7 @@ trainer.train()
 model.save_pretrained("./results")
 
 # Log in to Hugging Face Hub
-login(token="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")
+login(token="place token here")
 
 # # Push the model to the new Hugging Face repository
 model.push_to_hub("imdaisylee/test_model")

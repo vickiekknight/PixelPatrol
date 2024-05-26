@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.error) {
           resultText.textContent = `Error: ${data.error}`;
         } else {
-          resultText.innerHTML = `Prediction: ${data.prediction} <br> Confidence: ${data.confidence.toFixed(2)}`;
+          resultText.innerHTML = `Prediction: ${data.predicted_class} <br> Confidence: ${(data.confidence * 100).toFixed(2)}%`;
         }
       })
       .catch(error => {
@@ -67,5 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event listeners for drag and drop
   imageBox.addEventListener('drop', dropHandler);
   imageBox.addEventListener('dragover', dragOverHandler);
+  
+  // Click event for the image box to trigger file input
+  imageBox.addEventListener('click', () => {
+    imageInput.click();
+  });
 });
 

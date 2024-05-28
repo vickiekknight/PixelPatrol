@@ -1,58 +1,87 @@
-window.onload = function() {
-    // Check if the current URL is a file URL
-    if (window.location.protocol !== 'file:') {
-      const imageBox = document.getElementById('imageBox');
-      const imageInput = document.getElementById('imageInput');
-  
-      // Allow dropping files
-      imageBox.addEventListener('dragover', dragOverHandler);
-      imageBox.addEventListener('drop', dropHandler);
-  
-      // Handle file selection
-      imageInput.addEventListener('change', handleFileSelect);
-    }
-}
-  
-// Drag over handler
-function dragOverHandler(e) {
-    e.preventDefault();
+console.log("Content script loaded.");
+
+// Function to scrape images as you scroll
+function scrapeImages() {
+  let images = [];
+  document.querySelectorAll('img').forEach(img => {
+    console.log(`Found image: ${img.src}`);
+    images.push(img.src);
+  });
+  return images;
 }
 
-// Drop handler
-function dropHandler(e) {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    handleFiles(files);
+// Function to send images to Flask API
+function sendImagesToAPI(imageUrls) {
+  console.log("Sending images to API...");
+  fetch('http://127.0.0.1:5000/predict_from_url', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ image_urls: imageUrls })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Prediction results:', data);
+    // Display results or handle them as needed
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
 }
 
-// Handle file selection
-function handleFileSelect(e) {
-    const files = e.target.files;
-  
-    if (files.length > 0) {
-      const file = files[0];
-      const reader = new FileReader();
-  
-      reader.onload = function(e) {
-        const img = new Image();
-        img.src = e.target.result;
-        imageBox.innerHTML = '';
-        imageBox.appendChild(img);
-  
-        // Call your AI detection function here
-        detectAI(img);
-      };
-  
-      reader.onerror = function(e) {
-        console.error('Error reading file:', e.target.error);
-      };
-  
-      reader.readAsDataURL(file);
-    }
+// Scroll and scrape images
+function scrollAndScrape() {
+  window.scrollTo(0, document.body.scrollHeight);
+  setTimeout(() => {
+    let images = scrapeImages();
+    sendImagesToAPI(images);
+  }, 2000); // Adjust delay as needed
+}
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'detectImages') {
+    console.log("Detect images action received.");
+    scrollAndScrape();
+    sendResponse({ status: 'Scraping and detecting images' });
   }
+});
 
-// Handle files
-function handleFiles(files) {
+// manual upload functionality
+document.getElementById('uploadButton').addEventListener('click', () => {
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0];
+
+  if (file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('http://127.0.0.1:5000/predict', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      const output = document.getElementById('output');
+      output.innerHTML = `Prediction: ${data.prediction} <br> Confidence: ${data.confidence.toFixed(2)}`;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      const output = document.getElementById('output');
+      output.innerHTML = 'An error occurred. Please try again.';
+    });
+  } else {
+    alert('Please select a file.');
+  }
+});
+
+function dragOverHandler(event) {
+  event.preventDefault(); // Prevent default behavior
+}
+
+function dropHandler(event) {
+  event.preventDefault(); // Prevent default behavior
+  const files = event.dataTransfer.files;
   if (files.length > 0) {
     const file = files[0];
     const reader = new FileReader();

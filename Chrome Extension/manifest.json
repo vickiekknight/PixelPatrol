@@ -1,9 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AI Image Detector",
+  "name": "Image Detector",
   "version": "1.0",
-  "description": "Detect AI-generated and deepfake images on web pages",
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_popup": "popup.html"
   },
@@ -12,9 +11,14 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"], 
-      "js": ["content.js"],
-      "match_about_blank": true
+      "matches": ["*://www.instagram.com/*"],
+      "js": ["popup.js"]
     }
+  ],
+  "host_permissions": [
+    "*://www.instagram.com/*",
+    "http://127.0.0.1:5000/*"
   ]
 }
+
+

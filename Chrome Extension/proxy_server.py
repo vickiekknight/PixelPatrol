@@ -4,7 +4,9 @@ from flask_talisman import Talisman
 import requests
 
 app2 = Flask(__name__)
-CORS(app2, resources={r"/*": {"origins": "*"}})
+CORS(app2, resources={r"/*": {"origins": "*"}})  # Allow requests from all origins
+
+# Configure Talisman to set security headers
 Talisman(app2, content_security_policy=None)
 
 @app2.after_request
@@ -15,23 +17,19 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization'
     return response
 
-@app2.route('/proxy', methods=['GET'])
+@app2.route('/proxy', methods=['POST'])
 def proxy():
-    url = request.args.get('url')
+    url = request.json.get('url')
     if not url:
         return jsonify({"error": "No URL provided"}), 400
 
     try:
         response = requests.get(url, stream=True)
-        headers = [(name, value) for name, value in response.headers.items()]
-        
-        def generate():
-            for chunk in response.iter_content(8192):
-                yield chunk
-
-        return Response(generate(), headers=headers)
+        response.raise_for_status()
+        headers = [(name, value) for name, value in response.headers.items() if name.lower() not in ['content-length', 'transfer-encoding']]
+        return Response(response.raw, headers=headers, content_type=response.headers['Content-Type'])
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app2.run(debug=True, port=8000)
+    app2.run(debug=True, port=8000)  # Running on port 8000

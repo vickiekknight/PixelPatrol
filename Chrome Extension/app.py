@@ -5,9 +5,17 @@ import torch
 
 app1 = Flask(__name__)
 
-# Load model directly
-processor = AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector")
-model = AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")
+# Load models directly
+models = {
+    "model1": {
+        "processor": AutoImageProcessor.from_pretrained("emobobas/celebrity_deepfake_detection"),
+        "model": AutoModelForImageClassification.from_pretrained("emobobas/celebrity_deepfake_detection")
+    },
+    "model2": {
+        "processor": AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector"),
+        "model": AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")
+    }
+}
 
 @app1.route('/')
 def home():
@@ -15,19 +23,25 @@ def home():
 
 @app1.route('/predict', methods=['POST'])
 def predict():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
+    if 'file' not in request.files or 'model' not in request.form:
+        return jsonify({'error': 'No file or model part'})
     
     file = request.files['file']
-    
+    model_key = request.form['model']
+
     if file.filename == '':
         return jsonify({'error': 'No selected file'})
-    
+
+    if model_key not in models:
+        return jsonify({'error': 'Invalid model selected'})
+
     try:
         # Open the image file
         image = Image.open(file).convert('RGB')
         
         # Preprocess the image
+        processor = models[model_key]["processor"]
+        model = models[model_key]["model"]
         inputs = processor(images=image, return_tensors="pt")
         
         # Perform inference

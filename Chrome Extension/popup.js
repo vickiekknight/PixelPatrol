@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const detectButton = document.getElementById('detectButton');
   const imageBox = document.getElementById('imageBox');
   const resultText = document.getElementById('resultText');
+  const modelSelect = document.getElementById('modelSelect');
   let selectedImageUrl = null;
 
   function parseHTML(html, isPost) {
@@ -104,11 +105,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   detectButton.addEventListener('click', () => {
     if (selectedImageUrl) {
-      fetch(`http://127.0.0.1:8000/proxy?url=${encodeURIComponent(selectedImageUrl)}`)
+      fetch(`http://127.0.0.1:8000/proxy`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: selectedImageUrl })
+      })
         .then(res => res.blob())
         .then(blob => {
           const formData = new FormData();
           formData.append('file', blob, 'image.jpg');
+          formData.append('model', modelSelect.value);
 
           fetch('http://127.0.0.1:5000/predict', {
             method: 'POST',

@@ -5,22 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Image Detector</title>
   <link rel="stylesheet" href="style.css">
-  <script src="background.js"></script>
-
+  <script src="popup.js" defer></script>
 </head>
 <body>
   <div class="container">
     <h1 class="title">AI Image Detector</h1>
     <button id="detectButton" class="detect-btn">Detect AI</button>
-    <div class="image-box" id="imageBox" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
-        <p>Drag and drop an image here or click to select</p>
-        <input type="file" id="imageInput" accept="image/*" class="upload-btn" onchange="fileSelected(event)">
+    <div class="image-box" id="imageBox">
+      <p>Loading images...</p>
+    </div>
+    <div id="selectedImageBox" class="selected-image-box">
+      <p>No image selected.</p>
     </div>
     <div class="result-container">
-        <h2>Detection Results</h2>
-        <p id="resultText"></p>
+      <h2>Detection Results</h2>
+      <p id="resultText"></p>
     </div>
   </div>
-  <script src="popup.js"></script>
 </body>
 </html>
+
+

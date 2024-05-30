@@ -2,10 +2,14 @@
   "manifest_version": 3,
   "name": "AI Image Detector",
   "version": "1.0",
-  "description": "A Chrome extension that detects AI-generated images.",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "tabs",
+    "storage"
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup.html"
   },
@@ -13,8 +17,9 @@
     {
       "matches": ["<all_urls>"],
       "css": ["style.css"],
-      "js": ["popup.js"]
+      "js": ["content.js"]
     }
   ]
 }
+
 

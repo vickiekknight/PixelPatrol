@@ -3,17 +3,17 @@ from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
 import torch
 
-app = Flask(__name__)
+app1 = Flask(__name__)
 
 # Load model directly
-processor = AutoImageProcessor.from_pretrained("imdaisylee/test_model")
-model = AutoModelForImageClassification.from_pretrained("imdaisylee/test_model")
+processor = AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector")
+model = AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")
 
-@app.route('/')
+@app1.route('/')
 def home():
     return "Deepfake vs Real Image Detection API"
 
-@app.route('/predict', methods=['POST'])
+@app1.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'})
@@ -46,5 +46,4 @@ def predict():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app1.run(debug=True, port=5000)  # Running on port 5000

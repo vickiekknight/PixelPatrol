@@ -9,8 +9,16 @@ import os
 app = Flask(__name__)
 
 # Load model directly
-processor = AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector")  # Update with your actual model name
-model = AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")  # Update with your actual model name
+models = {
+    "model1": {
+        "processor": AutoImageProcessor.from_pretrained("emobobas/celebrity_deepfake_detection"),
+        "model": AutoModelForImageClassification.from_pretrained("emobobas/celebrity_deepfake_detection")
+    },
+    "model2": {
+        "processor": AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector"),
+        "model": AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")
+    }
+}
 
 @app.route('/')
 def home():
@@ -18,19 +26,25 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'})
-    
+    if 'file' not in request.files or 'model' not in request.form:
+        return jsonify({'error': 'No file or model part'})
+
     file = request.files['file']
-    
+    model_key = request.form['model']
+
     if file.filename == '':
         return jsonify({'error': 'No selected file'})
-    
+
+    if model_key not in models:
+        return jsonify({'error': 'Invalid model selected'})
+
     try:
         # Open the image file
         image = Image.open(file).convert('RGB')
         
         # Preprocess the image
+        processor = models[model_key]["processor"]
+        model = models[model_key]["model"]
         inputs = processor(images=image, return_tensors="pt")
         
         # Perform inference
@@ -47,36 +61,6 @@ def predict():
     
     except Exception as e:
         return jsonify({'error': str(e)})
-
-@app.route('/predict_from_url', methods=['POST'])
-def predict_from_url():
-    print(f"Received request with data: {data}")
-    data = request.get_json()
-    if 'image_urls' not in data:
-        return jsonify({'error': 'No image URLs provided'})
-
-    predictions = []
-
-    for url in data['image_urls']:
-        try:
-            response = requests.get(url)
-            image = Image.open(BytesIO(response.content)).convert('RGB')
-            inputs = processor(images=image, return_tensors="pt")
-
-            with torch.no_grad():
-                outputs = model(**inputs)
-
-            predicted_class_idx = outputs.logits.argmax(-1).item()
-            confidence_score = torch.softmax(outputs.logits, dim=-1)[0, predicted_class_idx].item()
-            predicted_class = model.config.id2label[predicted_class_idx]
-
-            predictions.append({'url': url, 'predicted_class': predicted_class, 'confidence': confidence_score})
-
-        except Exception as e:
-            predictions.append({'url': url, 'error': str(e)})
-
-    print(f"Returning predictions: {predictions}")
-    return jsonify(predictions)
 
 if __name__ == '__main__':
     app.run(debug=True)

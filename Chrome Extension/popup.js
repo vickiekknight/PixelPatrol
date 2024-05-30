@@ -1,24 +1,9 @@
-// triggers detection
-document.addEventListener('DOMContentLoaded', () => {
-  const feedDetectionToggle = document.getElementById('feedDetectionToggle');
-
-  feedDetectionToggle.addEventListener('change', () => {
-    if (feedDetectionToggle.checked) {
-      console.log("Feed detection toggle checked.");
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, { action: 'detectImages' });
-      });
-    }
-  });
-});
-
-// manual image detection
 document.addEventListener('DOMContentLoaded', () => {
   const detectButton = document.getElementById('detectButton');
   const imageInput = document.getElementById('imageInput');
   const imageBox = document.getElementById('imageBox');
   const resultText = document.getElementById('resultText');
+  const modelSelect = document.getElementById('modelSelect');
   let selectedFile = null;
 
   // Drag and drop handlers
@@ -58,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append('file', selectedFile);
+      formData.append('model', modelSelect.value);
 
       fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
@@ -83,20 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Event listeners for drag and drop
   imageBox.addEventListener('drop', dropHandler);
   imageBox.addEventListener('dragover', dragOverHandler);
-  
+
   // Click event for the image box to trigger file input
   imageBox.addEventListener('click', () => {
     imageInput.click();
   });
-
-  const feedDetectionToggle = document.getElementById('feedDetectionToggle');
-  feedDetectionToggle.addEventListener('change', () => {
-    if (feedDetectionToggle.checked) {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, { action: 'detectImages' });
-      });
-    }
-  });
 });
-

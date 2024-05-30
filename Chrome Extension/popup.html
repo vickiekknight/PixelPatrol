@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Image Detector</title>
   <link rel="stylesheet" href="style.css">
-  <script src="backend.js"></script>
+  <script src="popup.js"></script>
 
 </head>
 <body>
@@ -18,11 +18,8 @@
         <option value="model2">Model 2</option>
       </select>
     </div>
-    <div class="feed-detection-toggle">
-      <label for="feedDetectionToggle">Detect on Instagram Feed</label>
-      <input type="checkbox" id="feedDetectionToggle" />
-    </div>
-    <div class="image-box" id="imageBox"">
+
+    <div class="image-box" id="imageBox">
       <p>Drag and drop an image here or click to select</p>
       <input type="file" id="imageInput" accept="image/*" class="upload-btn">
     </div>

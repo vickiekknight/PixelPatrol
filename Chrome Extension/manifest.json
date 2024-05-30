@@ -1,24 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Image Detector",
+  "name": "AI Image Detector",
   "version": "1.0",
-  "permissions": ["activeTab", "scripting"],
+  "description": "A Chrome extension that detects AI-generated images.",
+  "permissions": [
+    "activeTab"
+  ],
   "action": {
     "default_popup": "popup.html"
   },
-  "background": {
-    "service_worker": "backend.js"
-  },
   "content_scripts": [
     {
-      "matches": ["*://www.instagram.com/*"],
+      "matches": ["<all_urls>"],
+      "css": ["style.css"],
       "js": ["popup.js"]
     }
-  ],
-  "host_permissions": [
-    "*://www.instagram.com/*",
-    "http://127.0.0.1:5000/*"
   ]
 }
-
-
